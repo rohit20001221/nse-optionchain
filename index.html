@@ -5,43 +5,71 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>NIFTY Live GEX Dashboard</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+            };
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body
-        class="bg-white text-black min-h-screen font-mono antialiased selection:bg-black selection:text-white"
+        class="bg-white text-black dark:bg-neutral-950 dark:text-neutral-100 min-h-screen font-mono antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-200"
     >
         <div class="max-w-7xl mx-auto px-4 py-6 space-y-6">
             <!-- Top Header -->
             <header
-                class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-300 pb-4"
+                class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-300 dark:border-neutral-800 pb-4"
             >
                 <div>
                     <h1
-                        class="text-2xl font-bold tracking-tight text-black uppercase"
+                        class="text-2xl font-bold tracking-tight text-black dark:text-white uppercase"
                     >
                         NIFTY Gamma Exposure (GEX)
                     </h1>
-                    <p class="text-xs text-neutral-600 mt-1">
+                    <p
+                        class="text-xs text-neutral-600 dark:text-neutral-400 mt-1"
+                    >
                         EXPIRY:
-                        <span id="expiryDate" class="text-black font-semibold"
+                        <span
+                            id="expiryDate"
+                            class="text-black dark:text-white font-semibold"
                             >--</span
                         >
                         &bull; LAST TICK:
-                        <span id="lastUpdated" class="text-black font-semibold"
+                        <span
+                            id="lastUpdated"
+                            class="text-black dark:text-white font-semibold"
                             >--</span
                         >
                     </p>
                 </div>
-                <div
-                    class="flex items-center gap-2.5 bg-neutral-50 border border-neutral-300 px-3.5 py-1.5 text-xs uppercase tracking-wider"
-                >
-                    <span
-                        id="statusDot"
-                        class="h-2 w-2 rounded-full bg-neutral-400 animate-pulse"
-                    ></span>
-                    <span id="statusText" class="text-neutral-700 font-semibold"
-                        >Connecting...</span
+
+                <div class="flex items-center gap-3">
+                    <!-- Theme Toggle Button -->
+                    <button
+                        id="themeToggle"
+                        type="button"
+                        aria-label="Toggle theme"
+                        class="flex items-center gap-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 px-3 py-1.5 text-xs uppercase tracking-wider text-neutral-800 dark:text-neutral-200 font-semibold transition-colors cursor-pointer"
                     >
+                        <span id="themeIcon">🌙</span>
+                        <span id="themeLabel">Dark</span>
+                    </button>
+
+                    <!-- Connection Status -->
+                    <div
+                        class="flex items-center gap-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-3.5 py-1.5 text-xs uppercase tracking-wider"
+                    >
+                        <span
+                            id="statusDot"
+                            class="h-2 w-2 rounded-full bg-neutral-400 animate-pulse"
+                        ></span>
+                        <span
+                            id="statusText"
+                            class="text-neutral-700 dark:text-neutral-300 font-semibold"
+                            >Connecting...</span
+                        >
+                    </div>
                 </div>
             </header>
 
@@ -49,67 +77,77 @@
             <section
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
             >
-                <div class="bg-neutral-50 border border-neutral-300 p-4">
+                <div
+                    class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 p-4"
+                >
                     <p
-                        class="text-[11px] uppercase tracking-widest text-neutral-500"
+                        class="text-[11px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400"
                     >
                         NIFTY Spot
                     </p>
                     <p
                         id="spotPrice"
-                        class="text-2xl font-bold text-black mt-1"
+                        class="text-2xl font-bold text-black dark:text-white mt-1"
                     >
                         --
                     </p>
                 </div>
-                <div class="bg-neutral-50 border border-neutral-300 p-4">
+                <div
+                    class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 p-4"
+                >
                     <p
-                        class="text-[11px] uppercase tracking-widest text-neutral-500"
+                        class="text-[11px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400"
                     >
                         Total Net GEX
                     </p>
                     <p
                         id="totalNetGex"
-                        class="text-2xl font-bold text-black mt-1"
+                        class="text-2xl font-bold text-black dark:text-white mt-1"
                     >
                         --
                     </p>
                 </div>
-                <div class="bg-neutral-50 border border-neutral-300 p-4">
+                <div
+                    class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 p-4"
+                >
                     <p
-                        class="text-[11px] uppercase tracking-widest text-neutral-500"
+                        class="text-[11px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400"
                     >
                         Zero Gamma Flip
                     </p>
                     <p
                         id="zeroGamma"
-                        class="text-2xl font-bold text-black mt-1"
+                        class="text-2xl font-bold text-black dark:text-white mt-1"
                     >
                         --
                     </p>
                 </div>
-                <div class="bg-neutral-50 border border-neutral-300 p-4">
+                <div
+                    class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 p-4"
+                >
                     <p
-                        class="text-[11px] uppercase tracking-widest text-neutral-500"
+                        class="text-[11px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400"
                     >
                         Total Call GEX
                     </p>
                     <p
                         id="totalCallGex"
-                        class="text-2xl font-bold text-black mt-1"
+                        class="text-2xl font-bold text-black dark:text-white mt-1"
                     >
                         --
                     </p>
                 </div>
-                <div class="bg-neutral-50 border border-neutral-300 p-4">
+                <div
+                    class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 p-4"
+                >
                     <p
-                        class="text-[11px] uppercase tracking-widest text-neutral-500"
+                        class="text-[11px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400"
                     >
                         Total Put GEX
                     </p>
                     <p
                         id="totalPutGex"
-                        class="text-2xl font-bold text-neutral-600 mt-1"
+                        class="text-2xl font-bold text-neutral-600 dark:text-neutral-400 mt-1"
                     >
                         --
                     </p>
@@ -120,28 +158,28 @@
             <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Vertical Net GEX Bar Chart -->
                 <div
-                    class="lg:col-span-7 bg-white border border-neutral-300 p-5 flex flex-col"
+                    class="lg:col-span-7 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 p-5 flex flex-col"
                 >
                     <div
-                        class="flex flex-wrap items-center justify-between gap-2 mb-4 border-b border-neutral-200 pb-3"
+                        class="flex flex-wrap items-center justify-between gap-2 mb-4 border-b border-neutral-200 dark:border-neutral-800 pb-3"
                     >
                         <h2
-                            class="text-sm font-bold uppercase tracking-wider text-black"
+                            class="text-sm font-bold uppercase tracking-wider text-black dark:text-white"
                         >
                             Net GEX by Strike (ATM &plusmn; 15)
                         </h2>
                         <div
-                            class="flex items-center gap-4 text-[11px] text-neutral-600"
+                            class="flex items-center gap-4 text-[11px] text-neutral-600 dark:text-neutral-400"
                         >
                             <span class="flex items-center gap-1.5">
                                 <span
-                                    class="inline-block w-3 h-3 bg-black border border-black"
+                                    class="inline-block w-3 h-3 bg-black dark:bg-white border border-black dark:border-white"
                                 ></span>
                                 +GEX
                             </span>
                             <span class="flex items-center gap-1.5">
                                 <span
-                                    class="inline-block w-3 h-3 bg-neutral-200 border border-neutral-700"
+                                    class="inline-block w-3 h-3 bg-neutral-200 dark:bg-neutral-800 border border-neutral-700 dark:border-neutral-500"
                                 ></span>
                                 -GEX
                             </span>
@@ -154,11 +192,13 @@
 
                 <!-- Strike Breakdown Table -->
                 <div
-                    class="lg:col-span-5 bg-white border border-neutral-300 overflow-hidden flex flex-col"
+                    class="lg:col-span-5 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 overflow-hidden flex flex-col"
                 >
-                    <div class="p-4 border-b border-neutral-300 bg-neutral-50">
+                    <div
+                        class="p-4 border-b border-neutral-300 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950/50"
+                    >
                         <h2
-                            class="text-sm font-bold uppercase tracking-wider text-black"
+                            class="text-sm font-bold uppercase tracking-wider text-black dark:text-white"
                         >
                             Strike-by-Strike GEX
                         </h2>
@@ -166,7 +206,7 @@
                     <div class="overflow-y-auto max-h-[500px]">
                         <table class="w-full text-xs text-right">
                             <thead
-                                class="bg-neutral-100 text-neutral-600 uppercase tracking-wider border-b border-neutral-300 sticky top-0"
+                                class="bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 uppercase tracking-wider border-b border-neutral-300 dark:border-neutral-700 sticky top-0"
                             >
                                 <tr>
                                     <th class="px-4 py-3 text-left">Strike</th>
@@ -177,12 +217,12 @@
                             </thead>
                             <tbody
                                 id="gexTableBody"
-                                class="divide-y divide-neutral-200"
+                                class="divide-y divide-neutral-200 dark:divide-neutral-800"
                             >
                                 <tr>
                                     <td
                                         colspan="4"
-                                        class="px-4 py-8 text-center text-neutral-400"
+                                        class="px-4 py-8 text-center text-neutral-400 dark:text-neutral-500"
                                     >
                                         Waiting for WebSocket stream...
                                     </td>
@@ -203,7 +243,14 @@
                 maximumFractionDigits: 2,
             });
 
-            // Initialize vertical Chart.js bar chart in light monochrome theme
+            let latestData = null;
+            let isWsConnected = false;
+
+            function isDarkMode() {
+                return document.documentElement.classList.contains("dark");
+            }
+
+            // Initialize vertical Chart.js bar chart in monochrome theme
             const ctx = document.getElementById("gexChart").getContext("2d");
             const gexChart = new Chart(ctx, {
                 type: "bar",
@@ -266,7 +313,117 @@
                 },
             });
 
+            function applyChartTheme() {
+                const dark = isDarkMode();
+
+                // Tooltip styles
+                gexChart.options.plugins.tooltip.backgroundColor = dark
+                    ? "#171717"
+                    : "#ffffff";
+                gexChart.options.plugins.tooltip.titleColor = dark
+                    ? "#ffffff"
+                    : "#000000";
+                gexChart.options.plugins.tooltip.bodyColor = dark
+                    ? "#d4d4d4"
+                    : "#262626";
+                gexChart.options.plugins.tooltip.borderColor = dark
+                    ? "#525252"
+                    : "#000000";
+
+                // Axis colors
+                gexChart.options.scales.x.grid.color = dark
+                    ? "rgba(255, 255, 255, 0.07)"
+                    : "rgba(0, 0, 0, 0.06)";
+                gexChart.options.scales.x.ticks.color = dark
+                    ? "#d4d4d4"
+                    : "#262626";
+
+                gexChart.options.scales.y.grid.color = (ctx) => {
+                    if (ctx.tick.value === 0) {
+                        return dark
+                            ? "rgba(255, 255, 255, 0.5)"
+                            : "rgba(0, 0, 0, 0.65)";
+                    }
+                    return dark
+                        ? "rgba(255, 255, 255, 0.08)"
+                        : "rgba(0, 0, 0, 0.08)";
+                };
+                gexChart.options.scales.y.ticks.color = dark
+                    ? "#a3a3a3"
+                    : "#525252";
+
+                // Bar colors
+                const rawData = gexChart.data.datasets[0].data;
+                gexChart.data.datasets[0].backgroundColor = rawData.map(
+                    (val) =>
+                        val >= 0
+                            ? dark
+                                ? "#ffffff"
+                                : "#000000"
+                            : dark
+                              ? "#262626"
+                              : "#e5e5e5",
+                );
+                gexChart.data.datasets[0].borderColor = rawData.map((val) =>
+                    val >= 0
+                        ? dark
+                            ? "#ffffff"
+                            : "#000000"
+                        : dark
+                          ? "#737373"
+                          : "#525252",
+                );
+
+                gexChart.update("none");
+            }
+
+            function syncThemeUI() {
+                const dark = isDarkMode();
+                document.getElementById("themeIcon").textContent = dark
+                    ? "☀️"
+                    : "🌙";
+                document.getElementById("themeLabel").textContent = dark
+                    ? "Light"
+                    : "Dark";
+
+                // Update status dot color if connected
+                const statusDot = document.getElementById("statusDot");
+                if (isWsConnected) {
+                    statusDot.className = dark
+                        ? "h-2 w-2 rounded-full bg-white"
+                        : "h-2 w-2 rounded-full bg-black";
+                }
+
+                applyChartTheme();
+            }
+
+            // Load saved or system theme preference
+            const savedTheme = localStorage.getItem("gex_theme");
+            if (
+                savedTheme === "dark" ||
+                (!savedTheme &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.documentElement.classList.add("dark");
+            }
+            syncThemeUI();
+
+            // Toggle theme on button click
+            document
+                .getElementById("themeToggle")
+                .addEventListener("click", () => {
+                    document.documentElement.classList.toggle("dark");
+                    localStorage.setItem(
+                        "gex_theme",
+                        isDarkMode() ? "dark" : "light",
+                    );
+                    syncThemeUI();
+                });
+
             function updateDashboard(data) {
+                latestData = data;
+                const dark = isDarkMode();
+
                 document.getElementById("expiryDate").textContent =
                     data.expiry_date || "--";
                 document.getElementById("lastUpdated").textContent =
@@ -281,7 +438,9 @@
                 const netEl = document.getElementById("totalNetGex");
                 netEl.textContent = fmtCompact.format(data.total_net_gex);
                 netEl.className = `text-2xl font-bold mt-1 ${
-                    data.total_net_gex >= 0 ? "text-black" : "text-neutral-500"
+                    data.total_net_gex >= 0
+                        ? "text-black dark:text-white"
+                        : "text-neutral-500 dark:text-neutral-400"
                 }`;
 
                 document.getElementById("totalCallGex").textContent =
@@ -317,15 +476,7 @@
                 gexChart.data.datasets[0].data = windowStrikes.map(
                     (s) => s.net_gex,
                 );
-
-                // Positive GEX = Solid Black | Negative GEX = Light Grey with Dark Border
-                gexChart.data.datasets[0].backgroundColor = windowStrikes.map(
-                    (s) => (s.net_gex >= 0 ? "#000000" : "#e5e5e5"),
-                );
-                gexChart.data.datasets[0].borderColor = windowStrikes.map(
-                    (s) => (s.net_gex >= 0 ? "#000000" : "#525252"),
-                );
-                gexChart.update();
+                applyChartTheme();
 
                 // Update Table
                 const tbody = document.getElementById("gexTableBody");
@@ -334,16 +485,34 @@
                         const isAtm = s.strike === strikes[atmIdx].strike;
                         const netStyle =
                             s.net_gex >= 0
-                                ? "text-black font-bold"
-                                : "text-neutral-500";
+                                ? "text-black dark:text-white font-bold"
+                                : "text-neutral-500 dark:text-neutral-400";
                         return `
-            <tr class="${isAtm ? "bg-black text-white font-bold" : "hover:bg-neutral-100"}">
+            <tr class="${
+                isAtm
+                    ? "bg-black text-white dark:bg-white dark:text-black font-bold"
+                    : "hover:bg-neutral-100 dark:hover:bg-neutral-800/70"
+            }">
               <td class="px-4 py-2.5 text-left">
-                ${s.strike} ${isAtm ? '<span class="ml-1 text-[10px] border border-white px-1">ATM</span>' : ""}
+                ${s.strike} ${
+                    isAtm
+                        ? '<span class="ml-1 text-[10px] border border-white dark:border-black px-1">ATM</span>'
+                        : ""
+                }
               </td>
-              <td class="px-4 py-2.5 ${isAtm ? "text-white" : "text-neutral-800"}">${fmtCompact.format(s.call_gex)}</td>
-              <td class="px-4 py-2.5 ${isAtm ? "text-neutral-300" : "text-neutral-500"}">${fmtCompact.format(s.put_gex)}</td>
-              <td class="px-4 py-2.5 ${isAtm ? "text-white" : netStyle}">${fmtCompact.format(s.net_gex)}</td>
+              <td class="px-4 py-2.5 ${
+                  isAtm
+                      ? "text-white dark:text-black"
+                      : "text-neutral-800 dark:text-neutral-200"
+              }">${fmtCompact.format(s.call_gex)}</td>
+              <td class="px-4 py-2.5 ${
+                  isAtm
+                      ? "text-neutral-300 dark:text-neutral-700"
+                      : "text-neutral-500 dark:text-neutral-400"
+              }">${fmtCompact.format(s.put_gex)}</td>
+              <td class="px-4 py-2.5 ${
+                  isAtm ? "text-white dark:text-black" : netStyle
+              }">${fmtCompact.format(s.net_gex)}</td>
             </tr>
           `;
                     })
@@ -362,7 +531,10 @@
                 );
 
                 ws.onopen = () => {
-                    statusDot.className = "h-2 w-2 rounded-full bg-black";
+                    isWsConnected = true;
+                    statusDot.className = isDarkMode()
+                        ? "h-2 w-2 rounded-full bg-white"
+                        : "h-2 w-2 rounded-full bg-black";
                     statusText.textContent = "Live Connected";
                 };
 
@@ -372,7 +544,9 @@
                 };
 
                 ws.onclose = () => {
-                    statusDot.className = "h-2 w-2 rounded-full bg-neutral-400";
+                    isWsConnected = false;
+                    statusDot.className =
+                        "h-2 w-2 rounded-full bg-neutral-400 dark:bg-neutral-600";
                     statusText.textContent = "Disconnected — Retrying in 3s...";
                     setTimeout(connectWebSocket, 3000);
                 };
