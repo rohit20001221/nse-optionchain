@@ -125,6 +125,10 @@ def create_websocket_handler(page: Page, context: BrowserContext, browser: Brows
     return on_websocket
 
 
+async def on_livestream_checkbox_change(elem):
+    print(elem)
+
+
 async def run_scraper(playwright: Playwright) -> None:
     browser = await playwright.firefox.launch(headless=False)
     context = await browser.new_context()
@@ -136,8 +140,14 @@ async def run_scraper(playwright: Playwright) -> None:
         await page.goto(
             "https://www.nseindia.in/option-chain", wait_until="domcontentloaded"
         )
-        await page.locator("#stream-optionchain-tile").check()
-        await page.wait_for_event("close", timeout=0)
+
+        while True:
+            is_checked = await page.locator("#stream-optionchain-tile").is_checked()
+            if not is_checked:
+                await page.locator("#stream-optionchain-tile").check()
+
+            await asyncio.sleep(0.01)
+
     except PlaywrightError as e:
         print(f"Playwright error: {e}")
     finally:
